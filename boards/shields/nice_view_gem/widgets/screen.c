@@ -44,19 +44,19 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
     rotate_canvas(canvas, cbuf);
 }
 
-static void draw_middle(lv_obj_t *widget, lv_color_t cbuf[], const struct status_state *state) {
-    lv_obj_t *canvas = lv_obj_get_child(widget, 1);
-    fill_background(canvas);
+// static void draw_middle(lv_obj_t *widget, lv_color_t cbuf[], const struct status_state *state) {
+//     lv_obj_t *canvas = lv_obj_get_child(widget, 1);
+//     fill_background(canvas);
 
-    // Draw widgets
-    //draw_wpm_status(canvas, state);
+//     // Draw widgets
+//     draw_wpm_status(canvas, state);
 
-    // Rotate for horizontal display
-    rotate_canvas(canvas, cbuf);
-}
+//     // Rotate for horizontal display
+//     rotate_canvas(canvas, cbuf);
+// }
 
 static void draw_bottom(lv_obj_t *widget, lv_color_t cbuf[], const struct status_state *state) {
-    lv_obj_t *canvas = lv_obj_get_child(widget, 2);
+    lv_obj_t *canvas = lv_obj_get_child(widget, 1);
     fill_background(canvas);
 
     // Draw widgets
@@ -209,15 +209,14 @@ int zmk_widget_screen_init(struct zmk_widget_screen *widget, lv_obj_t *parent) {
     lv_obj_align(top, LV_ALIGN_TOP_RIGHT, 0, 0);
     lv_canvas_set_buffer(top, widget->cbuf, BUFFER_SIZE, BUFFER_SIZE, LV_IMG_CF_TRUE_COLOR);
 
-    // lv_obj_t *middle = lv_canvas_create(widget->obj);
-    // lv_obj_align(middle, LV_ALIGN_TOP_RIGHT, BUFFER_OFFSET_MIDDLE, 0);
-    // lv_canvas_set_buffer(middle, widget->cbuf2, BUFFER_SIZE, BUFFER_SIZE, LV_IMG_CF_TRUE_COLOR);
+    lv_obj_t *middle = lv_canvas_create(widget->obj);
+    lv_obj_align(middle, LV_ALIGN_TOP_RIGHT, BUFFER_OFFSET_MIDDLE, 0);
+    draw_animation(*middle);
+    //lv_canvas_set_buffer(middle, widget->cbuf2, BUFFER_SIZE, BUFFER_SIZE, LV_IMG_CF_TRUE_COLOR);
 
     lv_obj_t *bottom = lv_canvas_create(widget->obj);
     lv_obj_align(bottom, LV_ALIGN_TOP_RIGHT, BUFFER_OFFSET_BOTTOM, 0);
     lv_canvas_set_buffer(bottom, widget->cbuf3, BUFFER_SIZE, BUFFER_SIZE, LV_IMG_CF_TRUE_COLOR);
-
-    draw_animation(widget->obj);
 
     sys_slist_append(&widgets, &widget->node);
     widget_battery_status_init();
